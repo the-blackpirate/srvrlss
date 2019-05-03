@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>
+  New Topic
+</h1>
+<div mat-dialog-content class="content">
+  <form [formGroup]="newTopicForm" (ngSubmit)="createNewTopic()">
+    <mat-form-field>
+      <mat-label>Topic title</mat-label>
+      <input matInput cdkFocusInitial type="text" formControlName="title" required />
+      <mat-error *ngIf="title.value.length === 0">Title is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let tag of tags"
+          [selectable]="true"
+          [removable]="true"
+          (removed)="remove(tag)"
+        >
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Category tags"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)"
+        />
+        <mat-error *ngIf="tags.length === 0">Atleast one tag is required</mat-error>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Type your message here</mat-label>
+      <textarea matInput formControlName="message" cdkTextareaAutosize="true"></textarea>
+      <mat-error *ngIf="message.value.length === 0">Message is required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="createNewTopic()">
+    <mat-icon>add</mat-icon> Create New Topic
+  </button>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+</div>

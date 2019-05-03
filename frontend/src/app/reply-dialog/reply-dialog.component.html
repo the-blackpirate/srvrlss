@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>
+  {{ data.topicTitle }}
+</h1>
+<div mat-dialog-content class="content">
+  <form [formGroup]="addReplyForm" (ngSubmit)="addReply()">
+    <mat-form-field>
+      <mat-label>Type your message here</mat-label>
+      <textarea matInput formControlName="message" cdkTextareaAutosize="true"></textarea>
+      <mat-error *ngIf="message.value.length === 0">Message is required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial (click)="addReply()">
+    <mat-icon class="mat-icon-rtl-mirror">reply</mat-icon>
+    Reply
+  </button>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+</div>

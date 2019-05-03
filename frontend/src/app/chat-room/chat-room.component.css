@@ -1,0 +1,38 @@
+main {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  margin-top: 64px;
+  width: 100%;
+  padding: 3% 2% 3% 2%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-button {
+  margin-top: 5%;
+}
+
+mat-card {
+  margin-top: 2%;
+}
+
+.list-item {
+  display: grid;
+  grid-template-areas: 'name message deleteButton';
+}
+
+.name {
+  grid-area: name;
+  padding-right: 10%;
+}
+
+.message {
+  grid-area: message;
+}
+
+.deleteButton {
+  grid-area: deleteButton;
+}

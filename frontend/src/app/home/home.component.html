@@ -1,0 +1,68 @@
+<div class="spinner" [ngClass]="{ hidden: !loading }">
+  <mat-spinner [diameter]="60"></mat-spinner>
+</div>
+
+<main [ngClass]="{ hidden: loading }">
+  <div class="top-header">
+    <h1 class="mat-display-2 heading"> Topics</h1>
+  </div>
+  <table *ngIf="dataSource" mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef >
+        <!-- <button mat-flat-button>Title</button> -->
+        Title
+      </th>
+      <td mat-cell *matCellDef="let element" class="topics ">
+        <a [routerLink]="['/', 'topic', element.topicID]" class="mat-display-1">
+          {{ element.title }}
+        </a>
+        <div>
+          <span *ngFor="let tag of element.tags" class="tags">
+            <a [routerLink]="['/']" [queryParams]="{ filter: tag }">#{{ tag }}</a>
+          </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef>
+        <!-- <button mat-flat-button>Last Activity</button> -->
+        Last Activity
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        matTooltip="{{ element.lastActivity | date: 'medium' }}"
+        class="time"
+      >
+        {{ element.lastActivity | timeAgo }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="replies">
+      <th mat-header-cell *matHeaderCellDef>
+        <!-- <button mat-flat-button>Replies</button> -->
+        Replies
+      </th>
+      <td mat-cell *matCellDef="let element" class="replies">
+        <a [routerLink]="['/', 'topic', element.topicID]">
+          {{ element.replyCount }}
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</main>
+
+<button
+  [ngClass]="{ hidden: loading }"
+  mat-fab
+  matTooltip="Create New Topic"
+  aria-label="Button that displays a tooltip when focused or hovered over"
+  (click)="openNewTopicDialog()"
+  class="create-button"
+>
+  <mat-icon>add</mat-icon>
+</button>

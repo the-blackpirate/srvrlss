@@ -1,0 +1,49 @@
+main {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.header button {
+  justify-self: self-end;
+}
+
+.grid {
+  display: grid;
+  max-width: 800px;
+  width: 90%;
+  margin-top: 5%;
+}
+
+.topic-title {
+  margin-block-end: 0.1em;
+  margin-block-start: 0.1em;
+}
+
+.topic-tag {
+  padding-inline-start: 16px;
+}
+
+.user-image {
+  background-size: cover;
+}
+
+.reply-content {
+  padding-top: 10px;
+  font-size: 1.1rem;
+}
+
+.reply-card {
+  margin: 10px 0 10px 0;
+}
+
+.reply-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

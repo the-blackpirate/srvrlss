@@ -1,0 +1,8 @@
+.vscode
+/.firebase
+
+frontend/dist
+frontend/node_modules
+
+backend/creds.json
+frontend/firebase-debug.log
