@@ -5,14 +5,11 @@ import (
 	"log"
 	"net/http"
 	"strings"
-
-	"go.opencensus.io/trace"
 )
 
 // GetUser api uses Firebase Authentication and returns the user data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	ctx, span := trace.StartSpan(r.Context(), "srvrlss.com/rajveermalviya/srvrlss/GetUser")
-	defer span.End()
+	ctx := r.Context()
 
 	header := w.Header()
 	header.Set("content-type", "application/json; charset=utf-8")

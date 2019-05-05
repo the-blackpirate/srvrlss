@@ -5,9 +5,6 @@ import (
 	"log"
 	"os"
 
-	"contrib.go.opencensus.io/exporter/stackdriver"
-	"go.opencensus.io/trace"
-
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	"google.golang.org/api/option"
@@ -33,12 +30,4 @@ func init() {
 		log.Fatalf("error initializing Firebase Auth: %v\n", err)
 	}
 
-	exporter, err := stackdriver.NewExporter(stackdriver.Options{
-		ProjectID: "srvrlss",
-	})
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	trace.RegisterExporter(exporter)
 }
