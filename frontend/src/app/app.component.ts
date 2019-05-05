@@ -16,7 +16,6 @@ export class AppComponent {
         return;
       }
       this.loggedIn = true;
-      console.log(user);
     });
 
     this.appService.progressBarStatus.subscribe(status => {

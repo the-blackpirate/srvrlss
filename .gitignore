@@ -1,8 +1,8 @@
 .vscode
-/.firebase
 
+frontend/.firebase
 frontend/dist
 frontend/node_modules
+frontend/firebase-debug.log
 
 backend/creds.json
-frontend/firebase-debug.log
