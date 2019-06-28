@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -47,9 +47,10 @@ export class ReplyDialogComponent implements OnInit {
 
     try {
       const batch = this.afs.firestore.batch();
+      const uid = this.afAuth.auth.currentUser.uid;
 
       batch.set(this.afs.firestore.collection(`/topics/${this.data.topicID}/replies/`).doc(), {
-        author: this.afAuth.auth.currentUser.uid,
+        author: uid,
         likes: 0,
         message: this.message.value,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()

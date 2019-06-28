@@ -5,7 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 
@@ -37,7 +38,7 @@ export interface Reply {
 export class TopicComponent implements OnDestroy {
   constructor(
     private afs: AngularFirestore,
-    private afAuth: AngularFireAuth,
+    public afAuth: AngularFireAuth,
     private appService: AppService,
     private router: Router,
     private route: ActivatedRoute,
@@ -120,15 +121,13 @@ export class TopicComponent implements OnDestroy {
 
   async isLikingReplay(replyID: string) {
     if (!this.afAuth.auth.currentUser) {
-      return;
+      return false;
     }
 
+    const uid = this.afAuth.auth.currentUser.uid;
+
     const doc = await this.afs.firestore
-      .doc(
-        `/topics/${this.topic.topicID}/replies/${replyID}/likers/${
-          this.afAuth.auth.currentUser.uid
-        }`
-      )
+      .doc(`/topics/${this.topic.topicID}/replies/${replyID}/likers/${uid}`)
       .get();
 
     if (doc.exists) {
@@ -152,14 +151,11 @@ export class TopicComponent implements OnDestroy {
     this.appService.setProgressBarStatus(true);
 
     try {
+      const uid = this.afAuth.auth.currentUser.uid;
       const batch = this.afs.firestore.batch();
 
       batch.set(
-        this.afs.firestore.doc(
-          `/topics/${this.topic.topicID}/replies/${replyID}/likers/${
-            this.afAuth.auth.currentUser.uid
-          }`
-        ),
+        this.afs.firestore.doc(`/topics/${this.topic.topicID}/replies/${replyID}/likers/${uid}`),
         { timestamp: firebase.firestore.FieldValue.serverTimestamp() }
       );
 
@@ -188,14 +184,11 @@ export class TopicComponent implements OnDestroy {
     this.appService.setProgressBarStatus(true);
 
     try {
+      const uid = this.afAuth.auth.currentUser.uid;
       const batch = this.afs.firestore.batch();
 
       batch.delete(
-        this.afs.firestore.doc(
-          `/topics/${this.topic.topicID}/replies/${replyID}/likers/${
-            this.afAuth.auth.currentUser.uid
-          }`
-        )
+        this.afs.firestore.doc(`/topics/${this.topic.topicID}/replies/${replyID}/likers/${uid}`)
       );
 
       batch.update(this.afs.firestore.doc(`/topics/${this.topic.topicID}/replies/${replyID}`), {

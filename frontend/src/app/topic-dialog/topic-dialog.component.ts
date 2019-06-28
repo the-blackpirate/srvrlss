@@ -5,7 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 
-import { MatDialogRef, MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
@@ -84,11 +85,12 @@ export class TopicDialogComponent implements OnInit {
 
     try {
       const batch = this.afs.firestore.batch();
+      const uid = this.afAuth.auth.currentUser.uid;
 
       const topicDocRef = this.afs.firestore.collection('topics').doc();
 
       batch.set(topicDocRef, {
-        author: this.afAuth.auth.currentUser.uid,
+        author: uid,
         replyCount: 0,
         tags: this.tags,
         createdOn: firebase.firestore.FieldValue.serverTimestamp(),
@@ -97,7 +99,7 @@ export class TopicDialogComponent implements OnInit {
       });
 
       batch.set(this.afs.firestore.collection(`/topics/${topicDocRef.id}/replies`).doc(), {
-        author: this.afAuth.auth.currentUser.uid,
+        author: uid,
         likes: 0,
         message: this.message.value,
         first: true,
