@@ -18,7 +18,11 @@ const auth = admin
 const app = express();
 app.use(cors());
 app.use(express.json());
-const port = 3000;
+app.use(express.static('public'))
+
+const PORT = process.env.PORT || 8080;
+const HOST = '0.0.0.0';
+
 const MongoClient = mongo.MongoClient;
 
 
