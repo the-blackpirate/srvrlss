@@ -6,15 +6,6 @@
   <div *ngIf="topic" class="grid">
     <div class="header">
       <h1 class="topic-title mat-display-1">{{ topic.title }}</h1>
-      <button
-        mat-icon-button
-        (click)="deleteTopic()"
-        *ngIf="afAuth.auth.currentUser && afAuth.auth.currentUser.uid === topic.author"
-        matTooltip="Delete Topic"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
     </div>
     <mat-chip-list class="topic-tag">
       <mat-chip *ngFor="let tag of topic.tags">{{ tag }}</mat-chip>
@@ -27,11 +18,14 @@
             mat-card-avatar
             class="user-image"
             [ngStyle]="{
-              'background-image': 'url(' + reply.authorImage + '), url(/assets/default.png)'
+              'background-image':
+                'url(' + reply.authorImage + '), url(/assets/default.png)'
             }"
           ></div>
           <mat-card-title>{{ reply.author }}</mat-card-title>
-          <mat-card-subtitle matTooltip="{{ reply.timestamp | date: 'medium' }}">
+          <mat-card-subtitle
+            matTooltip="{{ reply.timestamp | date: 'medium' }}"
+          >
             {{ reply.timestamp | timeAgo }}
           </mat-card-subtitle>
         </mat-card-header>

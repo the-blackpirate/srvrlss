@@ -8,7 +8,6 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { TopicComponent } from './topic/topic.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -37,7 +36,6 @@ import { TopicDialogComponent } from './topic-dialog/topic-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ChatRoomComponent,
     TopicComponent,
     ReplyDialogComponent,
     HomeComponent,
