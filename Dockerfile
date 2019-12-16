@@ -1,17 +1,20 @@
-FROM node
+FROM node:10 AS frontend
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+COPY frontend/package*.json frontend/
+RUN npm --prefix=frontend install
 
-RUN npm install
+COPY frontend/ frontend/
+RUN npm --prefix=frontend run build
+RUN mv frontend/dist dist
 
-# Bundle app source
-COPY node .
-COPY frontend/dist public
+FROM node:10 AS final
 
-CMD [ "node", "main.js" ]
+COPY node/package*.json node/
+RUN npm --prefix=node install
+
+COPY node/ node/
+COPY --from=frontend dist public
+
+CMD [ "npm", "run", "serve" ]
