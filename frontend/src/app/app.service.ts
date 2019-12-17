@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AppService {
   constructor() {}
 
-  static API = "http://localhost:3000";
+  static API = '';
 
   progressBarStatus = new BehaviorSubject<boolean>(false);
 
