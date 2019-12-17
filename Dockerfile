@@ -1,19 +1,8 @@
-FROM node:10 AS frontend
+FROM node:10
 
-WORKDIR /usr/src/app
-
-COPY frontend/package*.json frontend/
-RUN npm --prefix=frontend install
-
-COPY frontend/ frontend/
-RUN npm --prefix=frontend run build
-
-FROM node:10 AS final
-
-COPY node/package*.json node/
+COPY node/package*.json ./
 RUN npm --prefix=node install
 
-COPY node/ node/
-COPY --from=frontend frontend/dist/ public
+COPY node/ ./
 
 CMD [ "npm", "run", "serve" ]
