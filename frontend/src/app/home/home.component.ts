@@ -1,20 +1,21 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFireAuth } from '@angular/fire/auth';
 
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
-import { Subscription, timer } from "rxjs";
+import { Subscription, timer } from 'rxjs';
 
-import { Topic } from "../topic/topic.component";
-import { TopicDialogComponent } from "../topic-dialog/topic-dialog.component";
+import { Topic } from '../topic/topic.component';
+import { TopicDialogComponent } from '../topic-dialog/topic-dialog.component';
 
+import { AppService } from '../app.service';
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
   constructor(
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
 
-  displayedColumns: string[] = ["title", "time", "replies"];
+  displayedColumns: string[] = ['title', 'time', 'replies'];
   dataSource: MatTableDataSource<Topic>;
 
   ngOnInit() {
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async getTopics() {
     try {
-      const res = await fetch("http://localhost:3000/GetTopics");
+      const res = await fetch(`${AppService.API}/GetTopics`);
       this.topics = await res.json();
 
       console.log(this.topics);
@@ -58,13 +59,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async openNewTopicDialog() {
     if (!this.afAuth.auth.currentUser) {
-      this.snackBar.open("Please login first", "OK");
+      this.snackBar.open('Please login first', 'OK');
       return;
     }
 
     this.dialog.open(TopicDialogComponent, {
-      width: "90%",
-      maxWidth: "800px"
+      width: '90%',
+      maxWidth: '800px'
     });
   }
 }
