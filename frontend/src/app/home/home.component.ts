@@ -1,14 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-import { MatTableDataSource, MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+
 import { Topic } from '../topic/topic.component';
 import { TopicDialogComponent } from '../topic-dialog/topic-dialog.component';
 
+import { AppService } from '../app.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,60 +19,42 @@ import { TopicDialogComponent } from '../topic-dialog/topic-dialog.component';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   constructor(
-    private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {}
 
-  private subscriptions: Subscription[] = [];
-
   topics: Topic[] = [];
 
   loading = true;
+
+  subs: Subscription[] = [];
 
   displayedColumns: string[] = ['title', 'time', 'replies'];
   dataSource: MatTableDataSource<Topic>;
 
   ngOnInit() {
-    this.getTopics();
+    this.subs.push(timer(0, 3000).subscribe(() => this.getTopics()));
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    for (const sub of this.subs) {
+      sub.unsubscribe();
+    }
+  }
 
   async getTopics() {
-    this.subscriptions.push(
-      this.afs
-        .collection(this.afs.firestore.collection('topics'), ref =>
-          ref.orderBy('lastActivity', 'desc')
-        )
-        .snapshotChanges()
-        .subscribe(async docChangeArray => {
-          try {
-            const topics = new Array(docChangeArray.length);
-            const promises: Promise<void>[] = [];
+    try {
+      const res = await fetch(`${AppService.API}/GetTopics`);
+      this.topics = await res.json();
 
-            docChangeArray.map((docChange, i) => {
-              promises.push(
-                (async () => {
-                  const docData = docChange.payload.doc.data() as Topic;
-                  topics[i] = {
-                    ...docData,
-                    topicID: docChange.payload.doc.id,
-                    lastActivity: docData.lastActivity.toDate()
-                  };
-                })()
-              );
-            });
-
-            await Promise.all(promises);
-            this.topics = topics;
-            this.dataSource = new MatTableDataSource(this.topics);
-          } finally {
-            this.loading = false;
-          }
-        })
-    );
+      console.log(this.topics);
+      this.dataSource = new MatTableDataSource(this.topics);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loading = false;
+    }
   }
 
   async openNewTopicDialog() {

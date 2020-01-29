@@ -8,6 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 export class AppService {
   constructor() {}
 
+  static API = '';
+
   progressBarStatus = new BehaviorSubject<boolean>(false);
 
   setProgressBarStatus(status: boolean) {

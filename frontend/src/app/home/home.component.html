@@ -4,11 +4,11 @@
 
 <main [ngClass]="{ hidden: loading }">
   <div class="top-header">
-    <h1 class="mat-display-2 heading"> Topics</h1>
+    <h1 class="mat-display-2 heading">Topics</h1>
   </div>
   <table *ngIf="dataSource" mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef >
+      <th mat-header-cell *matHeaderCellDef>
         <!-- <button mat-flat-button>Title</button> -->
         Title
       </th>
@@ -18,7 +18,9 @@
         </a>
         <div>
           <span *ngFor="let tag of element.tags" class="tags">
-            <a [routerLink]="['/']" [queryParams]="{ filter: tag }">#{{ tag }}</a>
+            <a [routerLink]="['/']" [queryParams]="{ filter: tag }"
+              >#{{ tag }}</a
+            >
           </span>
         </div>
       </td>

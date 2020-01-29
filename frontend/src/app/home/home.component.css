@@ -4,7 +4,10 @@ main {
 }
 
 .top-header {
-  width: 90%;
+  width: 100%;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-bottom: 3%;
   max-width: 800px;
 }
 
@@ -20,9 +23,8 @@ main {
 }
 
 table {
-  width: 90%;
+  width: 100%;
   max-width: 800px;
-  min-width: 300px;
 }
 
 .mat-flat-button {
@@ -48,10 +50,4 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-@media only screen and (max-width: 375px) {
-  .time {
-    width: 50px;
-  }
 }
